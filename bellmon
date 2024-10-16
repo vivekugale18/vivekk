@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+int bellmanFord(int n, int m, int src, int dest, int edges[][3]);
+
+int main() {
+    int n;
+    int src, dest;
+    printf("\nEnter number of nodes ");
+    scanf("%d", &n);
+
+    int m = n - 1;
+    printf("\nEnter src ");
+    scanf("%d", &src);
+    printf("\nEnter destination ");
+    scanf("%d", &dest);
+
+    int edges[n][3];
+
+    for (int i = 0; i < n; i++) {
+        printf("\nEnter start node, end node, weight ");
+        scanf("%d %d %d", &edges[i][0], &edges[i][1], &edges[i][2]);
+    }
+
+    int ans = bellmanFord(n, m, src, dest, edges);
+    printf("\nshortest distance between %d and %d is %d", src, dest, ans);
+    return 0;
+}
+
+int bellmanFord(int n, int m, int src, int dest, int edges[][3]) {
+    int dis[n + 1];
+    for (int i = 0; i <= n; i++) {
+        dis[i] = INT_MAX;
+    }
+    dis[src] = 0;
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 0; j < n; j++) {
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int w = edges[j][2];
+
+            if (dis[u] != INT_MAX && (dis[u] + w < dis[v])) {
+                dis[v] = dis[u] + w;
+            }
+        }
+    }
+    return dis[dest];
+}
+
